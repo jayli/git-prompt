@@ -19,7 +19,7 @@ fn find_git_root(mut dir: PathBuf) -> Option<PathBuf> {
                     }
                 }
             } // end match
-        }
+        } // end while
     } else {
         return None;
     }
@@ -33,13 +33,13 @@ fn extract_last_segment(input: &str) -> Option<&str> {
 fn main() -> Result<()> {
     // 获取当前工作目录
     let mut current_dir = env::current_dir().context("Failed to get current directory")?;
-    
+
     // 查找 Git 仓库的根目录
     if let Some(git_root) = find_git_root(current_dir.clone()) {
         // 打开 Git 仓库
-        let l_repo = Repository::open(&git_root);
+        let try_open = Repository::open(&git_root);
 
-        match l_repo {
+        match try_open {
             Ok(repo) => {
                 // 获取当前分支名称
                 let head = repo.head()?;
@@ -55,10 +55,6 @@ fn main() -> Result<()> {
                 let branch_name_only = extract_last_segment(branch_name);
 
                 println!("({}{})", branch_name_only.unwrap_or_default(), changed_symble);
-
-                // println!("Git Root Directory: {:?}", git_root);
-                // println!("Branch: {}", branch_name);
-                // println!("Has Changes: {}", if has_changes { "Yes" } else { "No" });
             },
             Err(_) => {}
         }
