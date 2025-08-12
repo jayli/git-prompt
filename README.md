@@ -1,6 +1,6 @@
 # git-prompt
 
-zsh的git-prompt太慢，rust重写一个，用法：
+zsh的git-prompt太慢，rust重写一个：
 
 1. 编译
 
